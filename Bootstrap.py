@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from DiscountCurve import DiscountCurve
-from scipy.optimize import minimize
+from scipy.optimize import minimize, newton
 
 class Bootstrap():
 
@@ -16,11 +16,11 @@ class Bootstrap():
     def loss_function(self, zero_rates):
         self.dc.set_rates(zero_rates)
         valuation_result = np.array(list(map(lambda sec: sec.curve_valuation(self.dc, self.valuation_date), self.security_list)))
-        return np.sum((valuation_result - self.market_values) ** 2)
-    
-    def fit(self, initial_zero_rates=None):
+        return np.sum(((valuation_result - self.market_values)/self.market_values) ** 2) ** 0.5
+
+    def fit(self, initial_zero_rates=None, tol=None):
         if initial_zero_rates is None:
             initial_zero_rates = np.zeros(len(self.discount_curve_dates))
         self.dc = DiscountCurve(self.discount_curve_dates, initial_zero_rates, self.valuation_date)
-        res = minimize(lambda rates: self.loss_function(rates), initial_zero_rates, method='Nelder-Mead')
+        res = minimize(self.loss_function, initial_zero_rates, method='Nelder-Mead', tol=tol)
         self.result = DiscountCurve(self.discount_curve_dates, res.x, self.valuation_date)

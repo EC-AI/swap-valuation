@@ -5,7 +5,7 @@ import numpy as np
 
 bonos = pd.read_excel('prueba_bootstrap_bonos.xlsx', 'Bonos y Cetes')
 
-fecha = pd.Timestamp('20230405')
+fecha = pd.Timestamp('20240214')
 lista_bonos = []
 precios = []
 # fechas = [fecha]
@@ -28,5 +28,10 @@ for i in range(len(bonos)):
 
 bootstrap = Bootstrap(lista_bonos, precios, fechas, fecha)
 bootstrap.fit(np.array(tasas))
+
 print(bootstrap.result)
+c = Cetes(pd.Timestamp("20240222"), 0.1123)
+print(c.curve_valuation(bootstrap.dc, pd.Timestamp("20240214")))
+print(c.price(pd.Timestamp("20240214")))
+
 bootstrap.result.to_pandas().to_excel('bootstrap_result.xlsx', sheet_name='Bonos y Cetes')

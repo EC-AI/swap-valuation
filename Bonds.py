@@ -36,3 +36,14 @@ class FixedPaymentsBond():
             'Date': self.payment_dates.values,
             'Payment': self.payments.values,
         })
+    
+    def dv01(self, valuation_date=None, rate=None):
+        if rate is None:
+            rate = self.rate
+        if valuation_date is None:
+            valuation_date = self.start_date
+        rate_plus = rate + 0.0001
+        rate_minus = rate - 0.0001
+        p_plus = self.price(valuation_date, rate_plus)
+        p_minus = self.price(valuation_date, rate_minus)
+        return (p_minus - p_plus) / 2
