@@ -16,7 +16,7 @@ class Bootstrap():
     def loss_function(self, zero_rates):
         self.dc.set_rates(zero_rates)
         valuation_result = np.array(list(map(lambda sec: sec.curve_valuation(self.dc, self.valuation_date), self.security_list)))
-        return np.sum(((valuation_result - self.market_values)/self.market_values) ** 2) ** 0.5
+        return np.sum(((valuation_result - self.market_values)/self.market_values) ** 2)
 
     def fit(self, initial_zero_rates=None, tol=None):
         if initial_zero_rates is None:

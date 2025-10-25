@@ -5,14 +5,16 @@ from pandas.tseries.offsets import BDay
 
 from DiscountCurve import DiscountCurve
 
-cds = CDS(10000000, traded_spread=103, start_date=pd.Timestamp('20230909'), end_date=pd.Timestamp('20280620'), cash_date=pd.Timestamp('20230911'))
+cds = CDS(10000000, traded_spread=92, start_date=pd.Timestamp('20251024'), end_date=pd.Timestamp('20301220'), cash_date=pd.Timestamp('20251029'))
 
 zc = pd.read_excel('curvas2.xlsx', 'Curva')
 
 zc['ZR'] = zc['ZR']/100
-dc = DiscountCurve(zc['Fecha'], zc['ZR'], pd.Timestamp('20230909'))
-print(dc.discount_factor(cds.coupon_dates, pd.Timestamp('20230910')))
-#print(cds.cash_amount(dc))
+dc = DiscountCurve(zc['Fecha'], zc['ZR'], pd.Timestamp('20251024'))
+#print(cds.coupon_dates)
+print(dc.discount_factor(cds.coupon_dates, pd.Timestamp('20251024')))
+print(cds.find_constant_hazard_rate(dc))
+print(cds.cash_amount(dc))
 #print(cds.to_pandas(dc))
 #print(cds.coupon_dates)
 
