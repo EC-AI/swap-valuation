@@ -12,9 +12,11 @@ zc = pd.read_excel('curvas2.xlsx', 'Curva')
 zc['ZR'] = zc['ZR']/100
 dc = DiscountCurve(zc['Fecha'], zc['ZR'], pd.Timestamp('20251024'))
 #print(cds.coupon_dates)
-print(dc.discount_factor(cds.coupon_dates, pd.Timestamp('20251024')))
+#print(dc.discount_factor(cds.coupon_dates, pd.Timestamp('20251024')))
 print(cds.find_constant_hazard_rate(dc))
 print(cds.cash_amount(dc))
+#print(cds.premium_leg_pv(dc))
+#print(cds.protection_leg_pv(dc, hazard_rate=-0.0124447474190746))
 #print(cds.to_pandas(dc))
 #print(cds.coupon_dates)
 
